@@ -45,7 +45,7 @@ const limitadorAPI = rateLimit({
 app.use('/api/v1/', limitadorAPI);
 
 // Configuración de CORS dinámico para Dominican Technology
-const allowedOrigins = ['https://tu-dominio.com', 'http://localhost:3000'];
+const allowedOrigins = [process.env.ALLOWED_ORIGIN || 'http://localhost:3000'];
 
 const corsOptions = {
     origin: function (origin, callback) {
