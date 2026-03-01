@@ -1,0 +1,39 @@
+name: 🚀 Deploy API RNC (Directo)
+
+on:
+  push:
+    branches:
+      - main  # Se activa al hacer push a main
+
+jobs:
+  deploy:
+    name: 🚚 FTP Transfer
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📂 Obtener código
+      uses: actions/checkout@v4
+
+    - name: ⚙️ Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+        
+    - name: 📦 Instalar Dependencias
+      run: npm install --production
+
+    - name: 📂 Subir a producción vía FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./ 
+        server-dir: /
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          .env
+          README.md
