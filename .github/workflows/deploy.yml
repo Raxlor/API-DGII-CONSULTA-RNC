@@ -21,7 +21,7 @@ jobs:
 
         
     - name: 📦 Instalar Dependencias
-      run: npm install --production
+      run: npm install
 
     - name: 📂 Subir a producción vía FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
