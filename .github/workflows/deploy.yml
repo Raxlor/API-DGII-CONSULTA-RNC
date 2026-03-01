@@ -3,7 +3,7 @@ name: 🚀 Deploy API RNC (Directo)
 on:
   push:
     branches:
-      - main  # Se activa al hacer push a main
+      - master  
 
 jobs:
   deploy:
