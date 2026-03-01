@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: 🚚 FTP Transfer
+    name: 🚚 FTP Transfer & Auto-Restart
     runs-on: ubuntu-latest
 
     steps:
@@ -18,10 +18,15 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '22'
-
         
     - name: 📦 Instalar Dependencias
       run: npm install
+
+    - name: 🔔 Crear señal de reinicio (restart.txt)
+      run: |
+        mkdir -p tmp
+        touch tmp/restart.txt
+    # -----------------------------------------------------------------
 
     - name: 📂 Subir a producción vía FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -30,7 +35,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./ 
-        server-dir: /
+        server-dir: /public_html/dgii_public/
         exclude: |
           **/.git*
           **/.git*/**
