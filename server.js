@@ -1,3 +1,4 @@
+require('dotenv').config(); 
 const express = require('express');
 const path = require('path');
 const mysql = require('mysql2/promise');
@@ -12,18 +13,17 @@ const puerto = 3000;
 // CONFIGURACIÓN DE LA BASE DE DATOS
 // ==========================================
 
-// Cambia 'localhost' por '127.0.0.1' para mejorar la velocidad en Windows
 const dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    name: process.env.DB_NAME
+    database: process.env.DB_NAME // <-- Cambiado de 'name' a 'database'
 };
 
 const pool = mysql.createPool({
     ...dbConfig,
     waitForConnections: true,
-    connectionLimit: 15, // Aumentado para manejar el rastreador
+    connectionLimit: 15,
     queueLimit: 0
 });
 
