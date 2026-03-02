@@ -8,7 +8,8 @@ const cors = require('cors');
 const swaggerDocument = require('./swagger.json');
 const app = express();
 const puerto = 3000;
-
+const { SitemapStream, streamToPromise } = require('sitemap');
+const { Readable } = require('stream');
 // ==========================================
 // CONFIGURACIÓN DE LA BASE DE DATOS
 // ==========================================
@@ -26,7 +27,6 @@ const pool = mysql.createPool({
     connectionLimit: 15,
     queueLimit: 0
 });
-
 
 
 // ==========================================
@@ -183,19 +183,26 @@ app.get('/api/consultar', async (req, res) => {
     }
 });
 
-// Función optimizada para RAXLOR SYSTEMS
-const registrarLog = async (tipo, ip) => {
-    try {
-        // No usamos 'await' en la ruta principal para no frenar la respuesta al usuario
-        pool.query(
-            'INSERT INTO consultas_log (tipo_consulta, ip_cliente) VALUES (?, ?)',
-            [tipo, ip]
-        );
-    } catch (err) {
-        console.error("Error silencioso en log:", err.message);
-    }
-};
 
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const links = [
+      { url: '/',  changefreq: 'daily', priority: 1.0 },
+      { url: '/docs',  changefreq: 'monthly', priority: 0.8 },
+      // Aquí puedes traer de tu base de datos los RNCs más buscados
+      // { url: '/rnc/133626268', changefreq: 'weekly', priority: 0.6 }
+    ];
+
+    const stream = new SitemapStream({ hostname: 'https://api-dgii.dominicantechnology.com' });
+    res.header('Content-Type', 'application/xml');
+
+    const sitemap = await streamToPromise(Readable.from(links).pipe(stream));
+    res.send(sitemap.toString());
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+});
 // ==========================================
 // INICIO DEL SERVIDOR
 // ==========================================
