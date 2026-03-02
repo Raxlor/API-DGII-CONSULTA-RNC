@@ -5,12 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>API RNC Dominicana Gratis | Dominican Technology</title>
+    <title>API RNC DGII Gratis | Consulta RNC Dominicana | Dominican Technology</title>
+
     <meta name="description"
-        content="Consulta RNC en RD al instante. API gratuita para desarrolladores con 2,500 solicitudes cada 5 minutos. Soporte de RAXLOR SYSTEMS.">
-    <meta name="keywords"
-        content="api rnc dominicana, consulta rnc dgii, buscar rnc, api dgii gratis, raxlor systems, dominican technology">
-    <meta name="author" content="RAXLOR SYSTEMS">
+        content="La API de RNC más rápida de República Dominicana. Consulta datos de la DGII en tiempo real, validación de cédulas y soporte para facturación electrónica. ¡Pruébala gratis!">
+
+    <meta property="og:title" content="API RNC Dominicana - RAXLOR SYSTEMS">
+    <meta property="og:description" content="Integración directa con la base de datos de la DGII para desarrolladores.">
+    <meta property="og:image" content="https://api-dgii.dominicantechnology.com/og-image.png">
 
     <link rel="icon" type="image/png" href="/Logo.png">
 
@@ -65,8 +67,17 @@
 
         /* Animación de pulso para el contador de latencia */
         @keyframes pulse-soft {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
         }
 
         #real-latency {
@@ -78,9 +89,17 @@
             border-bottom: 2px solid #38bdf8;
         }
 
-        .code-syntax-keyword { color: #c792ea; }
-        .code-syntax-func { color: #82aaff; }
-        .code-syntax-string { color: #ecc48d; }
+        .code-syntax-keyword {
+            color: #c792ea;
+        }
+
+        .code-syntax-func {
+            color: #82aaff;
+        }
+
+        .code-syntax-string {
+            color: #ecc48d;
+        }
     </style>
 </head>
 
@@ -90,11 +109,15 @@
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <img src="/Logo.png" alt="Dominican Technology" class="h-9 w-auto">
-                <span class="font-extrabold text-brand-dark texto-mayuscula text-sm tracking-tighter">Dominican Technology</span>
+                <span class="font-extrabold text-brand-dark texto-mayuscula text-sm tracking-tighter">Dominican
+                    Technology</span>
             </div>
             <div class="flex items-center gap-4">
-                <a href="/docs" class="hidden md:block text-xs font-bold text-slate-500 hover:text-brand-blue transition texto-mayuscula">Documentación</a>
-                <span class="bg-green-100 text-green-700 text-[10px] px-3 py-1 rounded-full font-black texto-mayuscula shadow-sm">API Online</span>
+                <a href="/docs"
+                    class="hidden md:block text-xs font-bold text-slate-500 hover:text-brand-blue transition texto-mayuscula">Documentación</a>
+                <span
+                    class="bg-green-100 text-green-700 text-[10px] px-3 py-1 rounded-full font-black texto-mayuscula shadow-sm">API
+                    Online</span>
             </div>
         </div>
     </nav>
@@ -121,9 +144,11 @@
                 </form>
             </div>
 
-            <div id="mensaje" class="mb-4 text-sm font-bold text-brand-blue h-6 uppercase tracking-widest transition-all"></div>
+            <div id="mensaje"
+                class="mb-4 text-sm font-bold text-brand-blue h-6 uppercase tracking-widest transition-all"></div>
 
-            <div id="divTabla" class="hidden overflow-hidden border border-slate-200 rounded-3xl bg-white shadow-xl mb-12">
+            <div id="divTabla"
+                class="hidden overflow-hidden border border-slate-200 rounded-3xl bg-white shadow-xl mb-12">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead class="bg-slate-50 border-b border-slate-200">
@@ -138,14 +163,19 @@
                 </div>
             </div>
 
-            <div class="bg-brand-dark rounded-3xl p-8 mb-12 text-white text-left flex flex-col md:flex-row items-center justify-between gap-6 border-b-4 border-brand-blue shadow-xl">
+            <div
+                class="bg-brand-dark rounded-3xl p-8 mb-12 text-white text-left flex flex-col md:flex-row items-center justify-between gap-6 border-b-4 border-brand-blue shadow-xl">
                 <div>
                     <h2 class="text-2xl font-black mb-2 tracking-tight">Capacidad Industrial</h2>
-                    <p class="text-slate-400 text-sm max-w-md leading-relaxed">Nuestra arquitectura soporta hasta <span class="text-white font-bold">2,500 solicitudes cada 5 minutos</span> por IP. Sin registros obligatorios.</p>
+                    <p class="text-slate-400 text-sm max-w-md leading-relaxed">Nuestra arquitectura soporta hasta <span
+                            class="text-white font-bold">2,500 solicitudes cada 5 minutos</span> por IP. Sin registros
+                        obligatorios.</p>
                 </div>
                 <div class="flex gap-3">
-                    <a href="https://github.com/Raxlor" target="_blank" class="bg-slate-800 text-white px-5 py-4 rounded-xl font-bold text-xs hover:bg-slate-700 transition-all flex items-center gap-2 uppercase tracking-wider">GitHub</a>
-                    <a href="/docs" class="bg-white text-brand-dark px-6 py-4 rounded-xl font-black texto-mayuscula text-xs hover:bg-brand-blue hover:text-white transition-all shadow-lg">Documentación</a>
+                    <a href="https://github.com/Raxlor" target="_blank"
+                        class="bg-slate-800 text-white px-5 py-4 rounded-xl font-bold text-xs hover:bg-slate-700 transition-all flex items-center gap-2 uppercase tracking-wider">GitHub</a>
+                    <a href="/docs"
+                        class="bg-white text-brand-dark px-6 py-4 rounded-xl font-black texto-mayuscula text-xs hover:bg-brand-blue hover:text-white transition-all shadow-lg">Documentación</a>
                 </div>
             </div>
         </div>
@@ -153,7 +183,8 @@
         <section class="w-full max-w-4xl mx-auto mb-12 grid grid-cols-1 sm:grid-cols-3 gap-6 px-4 reveal">
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
                 <span id="real-queries" class="block text-3xl font-black text-brand-dark tracking-tight">0</span>
-                <span class="text-[10px] font-bold text-slate-400 texto-mayuscula tracking-widest">Consultas Totales</span>
+                <span class="text-[10px] font-bold text-slate-400 texto-mayuscula tracking-widest">Consultas
+                    Totales</span>
             </div>
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
                 <span id="real-db" class="block text-3xl font-black text-brand-dark tracking-tight">0</span>
@@ -161,40 +192,49 @@
             </div>
             <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
                 <span id="real-latency" class="block text-3xl font-black text-brand-blue tracking-tight">-- ms</span>
-                <span class="text-[10px] font-bold text-slate-400 texto-mayuscula tracking-widest">Tu Latencia Actual</span>
+                <span class="text-[10px] font-bold text-slate-400 texto-mayuscula tracking-widest">Tu Latencia
+                    Actual</span>
             </div>
         </section>
 
         <section id="code-samples" class="w-full max-w-4xl mb-20 px-2 reveal">
             <div class="text-center mb-10">
-                <h3 class="font-black texto-mayuscula text-slate-400 text-xs tracking-[0.3em] mb-2">Implementación Profesional</h3>
+                <h3 class="font-black texto-mayuscula text-slate-400 text-xs tracking-[0.3em] mb-2">Implementación
+                    Profesional</h3>
                 <p class="text-slate-500 text-sm">Ejemplos para validación directa y búsqueda masiva.</p>
             </div>
 
             <div class="bg-brand-dark rounded-3xl shadow-2xl border border-slate-700 overflow-hidden">
                 <div class="flex items-center justify-between px-6 py-4 bg-slate-800/50 border-b border-slate-700">
                     <div class="flex gap-6">
-                        <button onclick="switchTab('php')" id="tab-php" class="tab-btn text-xs font-bold texto-mayuscula tab-active pb-1 transition-all">PHP</button>
-                        <button onclick="switchTab('nodejs')" id="tab-nodejs" class="tab-btn text-xs font-bold texto-mayuscula text-slate-400 hover:text-white pb-1 transition-all">Node.js</button>
-                        <button onclick="switchTab('python')" id="tab-python" class="tab-btn text-xs font-bold texto-mayuscula text-slate-400 hover:text-white pb-1 transition-all">Python</button>
+                        <button onclick="switchTab('php')" id="tab-php"
+                            class="tab-btn text-xs font-bold texto-mayuscula tab-active pb-1 transition-all">PHP</button>
+                        <button onclick="switchTab('nodejs')" id="tab-nodejs"
+                            class="tab-btn text-xs font-bold texto-mayuscula text-slate-400 hover:text-white pb-1 transition-all">Node.js</button>
+                        <button onclick="switchTab('python')" id="tab-python"
+                            class="tab-btn text-xs font-bold texto-mayuscula text-slate-400 hover:text-white pb-1 transition-all">Python</button>
                     </div>
                 </div>
 
                 <div class="p-8 relative group bg-[#011627]">
-                    <button onclick="copyCode(event)" class="absolute top-4 right-4 bg-slate-700 hover:bg-brand-blue text-white text-[10px] font-bold px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all texto-mayuscula">Copiar</button>
+                    <button onclick="copyCode(event)"
+                        class="absolute top-4 right-4 bg-slate-700 hover:bg-brand-blue text-white text-[10px] font-bold px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-all texto-mayuscula">Copiar</button>
                     <div id="code-php" class="code-block">
-                        <pre class="text-sm leading-relaxed text-slate-300"><span class="code-syntax-keyword">&lt;?php</span>
+                        <pre
+                            class="text-sm leading-relaxed text-slate-300"><span class="code-syntax-keyword">&lt;?php</span>
 <span class="text-slate-200">$base</span> = <span class="code-syntax-string">"<span class="dynamic-url"></span>"</span>;
 <span class="text-slate-200">$res_rnc</span> = <span class="text-yellow-300">json_decode</span>(<span class="text-yellow-300">file_get_contents</span>(<span class="text-slate-200">$base</span> . <span class="code-syntax-string">"/api/v1/rnc/133626268"</span>), <span class="code-syntax-keyword">true</span>);
 <span class="code-syntax-keyword">echo</span> <span class="text-slate-200">$res_rnc</span>[<span class="code-syntax-string">'data'</span>][<span class="code-syntax-string">'razon_social'</span>];</pre>
                     </div>
                     <div id="code-nodejs" class="code-block hidden">
-                        <pre class="text-sm leading-relaxed text-slate-300"><span class="code-syntax-keyword">const</span> <span class="text-blue-300">base</span> = <span class="code-syntax-string">'<span class="dynamic-url"></span>'</span>;
+                        <pre
+                            class="text-sm leading-relaxed text-slate-300"><span class="code-syntax-keyword">const</span> <span class="text-blue-300">base</span> = <span class="code-syntax-string">'<span class="dynamic-url"></span>'</span>;
 <span class="code-syntax-keyword">const</span> <span class="text-slate-200">rnc</span> = <span class="code-syntax-keyword">await</span> (<span class="code-syntax-keyword">await</span> <span class="code-syntax-func">fetch</span>(<span class="code-syntax-string">`${base}/api/v1/rnc/133626268`</span>)).<span class="code-syntax-func">json</span>();
 <span class="text-blue-400">console</span>.<span class="code-syntax-func">log</span>(<span class="text-slate-200">rnc</span>.data.razon_social);</pre>
                     </div>
                     <div id="code-python" class="code-block hidden">
-                        <pre class="text-sm leading-relaxed text-slate-300"><span class="code-syntax-keyword">import</span> <span class="text-slate-200">requests</span>
+                        <pre
+                            class="text-sm leading-relaxed text-slate-300"><span class="code-syntax-keyword">import</span> <span class="text-slate-200">requests</span>
 <span class="text-slate-200">base</span> = <span class="code-syntax-string">'<span class="dynamic-url"></span>'</span>
 <span class="text-slate-200">data_rnc</span> = <span class="text-slate-200">requests</span>.<span class="code-syntax-func">get</span>(f<span class="code-syntax-string">'{base}/api/v1/rnc/133626268'</span>).<span class="code-syntax-func">json</span>()
 <span class="text-white">print</span>(<span class="text-slate-200">data_rnc</span>[<span class="code-syntax-string">'data'</span>][<span class="code-syntax-string">'razon_social'</span>])</pre>
@@ -206,22 +246,29 @@
         <section class="container mx-auto max-w-5xl py-12 border-t border-slate-200 mb-10 reveal">
             <div class="grid md:grid-cols-2 gap-12">
                 <div>
-                    <h3 class="font-bold text-lg mb-4 text-brand-dark tracking-tight">Infraestructura RAXLOR SYSTEMS</h3>
-                    <p class="text-sm text-slate-500 leading-relaxed mb-6">Dominican Technology es un nodo de datos optimizado para la República Dominicana. Eliminamos la burocracia técnica para acceder a información de libre acceso público.</p>
+                    <h3 class="font-bold text-lg mb-4 text-brand-dark tracking-tight">Infraestructura RAXLOR SYSTEMS
+                    </h3>
+                    <p class="text-sm text-slate-500 leading-relaxed mb-6">Dominican Technology es un nodo de datos
+                        optimizado para la República Dominicana. Eliminamos la burocracia técnica para acceder a
+                        información de libre acceso público.</p>
                     <div class="bg-orange-50 p-5 rounded-2xl border-l-4 border-orange-400 shadow-sm">
                         <p class="text-[11px] text-slate-600 font-medium leading-relaxed italic">
-                            <span class="font-black text-orange-600 uppercase tracking-tighter not-italic">Aviso Legal:</span> Los datos provienen de registros públicos de la DGII. <strong>RAXLOR SYSTEMS</strong> no garantiza la veracidad o actualización en tiempo real.
+                            <span class="font-black text-orange-600 uppercase tracking-tighter not-italic">Aviso
+                                Legal:</span> Los datos provienen de registros públicos de la DGII. <strong>RAXLOR
+                                SYSTEMS</strong> no garantiza la veracidad o actualización en tiempo real.
                         </p>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 gap-6">
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                         <h4 class="font-bold text-brand-dark text-sm mb-2 flex items-center gap-2">⚡ Rendimiento</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Latencia sub-50ms mediante caché distribuida y optimización de índices SQL.</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Latencia sub-50ms mediante caché distribuida y
+                            optimización de índices SQL.</p>
                     </div>
                     <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                         <h4 class="font-bold text-brand-dark text-sm mb-2 flex items-center gap-2">🛡️ Privacidad</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">Infraestructura blindada. No almacenamos registros de tus búsquedas ni datos sensibles.</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Infraestructura blindada. No almacenamos
+                            registros de tus búsquedas ni datos sensibles.</p>
                     </div>
                 </div>
             </div>
@@ -232,15 +279,20 @@
         <div class="container mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-center gap-10">
             <div class="text-center md:text-left">
                 <img src="/Logo.png" alt="Logo" class="h-10 w-auto mb-4 mx-auto md:mx-0 brightness-0 invert">
-                <span class="block text-sm font-black texto-mayuscula mb-1 tracking-widest text-brand-blue">RAXLOR SYSTEMS</span>
-                <span class="block text-[10px] text-slate-400 font-medium tracking-wider uppercase">DOMINICAN TECHNOLOGY INFRASTRUCTURE | RNC: 133-62626-8</span>
+                <span class="block text-sm font-black texto-mayuscula mb-1 tracking-widest text-brand-blue">RAXLOR
+                    SYSTEMS</span>
+                <span class="block text-[10px] text-slate-400 font-medium tracking-wider uppercase">DOMINICAN TECHNOLOGY
+                    INFRASTRUCTURE | RNC: 133-62626-8</span>
             </div>
             <div class="text-center md:text-right">
                 <div class="flex gap-4 justify-center md:justify-end items-center mb-4">
-                    <a href="https://github.com/Raxlor" target="_blank" class="text-slate-400 hover:text-white transition text-xs font-bold uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md">GitHub</a>
-                    <a href="/docs" class="text-slate-400 hover:text-white transition text-xs font-bold uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md">Docs</a>
+                    <a href="https://github.com/Raxlor" target="_blank"
+                        class="text-slate-400 hover:text-white transition text-xs font-bold uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md">GitHub</a>
+                    <a href="/docs"
+                        class="text-slate-400 hover:text-white transition text-xs font-bold uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md">Docs</a>
                 </div>
-                <p class="text-[11px] font-bold texto-mayuscula text-slate-500 tracking-tighter">© 2026 Dominican Technology • Santo Domingo, RD</p>
+                <p class="text-[11px] font-bold texto-mayuscula text-slate-500 tracking-tighter">© 2026 Dominican
+                    Technology • Santo Domingo, RD</p>
             </div>
         </div>
     </footer>
@@ -301,10 +353,10 @@
         window.addEventListener('DOMContentLoaded', () => {
             const currentOrigin = window.location.origin;
             document.querySelectorAll('.dynamic-url').forEach(el => el.textContent = currentOrigin);
-            
+
             const reveals = document.querySelectorAll('.reveal');
             reveals.forEach(el => statsObserver.observe(el));
-            
+
             updateStats();
         });
 
@@ -361,4 +413,5 @@
         setInterval(updateStats, 30000);
     </script>
 </body>
+
 </html>
