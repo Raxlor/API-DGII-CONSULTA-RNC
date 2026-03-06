@@ -186,21 +186,52 @@ app.get('/api/consultar', async (req, res) => {
 
 app.get('/sitemap.xml', async (req, res) => {
   try {
+
     const links = [
-      { url: '/',  changefreq: 'daily', priority: 1.0 },
-      { url: '/docs',  changefreq: 'monthly', priority: 0.8 },
-      // Aquí puedes traer de tu base de datos los RNCs más buscados
-      // { url: '/rnc/133626268', changefreq: 'weekly', priority: 0.6 }
+      {
+        url: '/',
+        changefreq: 'daily',
+        priority: 1.0,
+        lastmod: new Date().toISOString()
+      },
+      {
+        url: '/docs',
+        changefreq: 'weekly',
+        priority: 0.9,
+        lastmod: new Date().toISOString()
+      },
+      {
+        url: '/openapi.json',
+        changefreq: 'monthly',
+        priority: 0.7
+      },
+      {
+        url: '/api/v1/rnc/101003723',
+        changefreq: 'monthly',
+        priority: 0.6
+      },
+      {
+        url: '/api/v1/buscar?q=CERVECERIA',
+        changefreq: 'monthly',
+        priority: 0.6
+      }
     ];
 
-    const stream = new SitemapStream({ hostname: 'https://api-dgii.dominicantechnology.com' });
+    const stream = new SitemapStream({
+      hostname: 'https://api-dgii.dominicantechnology.com'
+    });
+
     res.header('Content-Type', 'application/xml');
 
-    const sitemap = await streamToPromise(Readable.from(links).pipe(stream));
-    res.send(sitemap.toString());
-  } catch (e) {
-    console.error(e);
-    res.status(500).end();
+    const xml = await streamToPromise(
+      Readable.from(links).pipe(stream)
+    );
+
+    res.send(xml.toString());
+
+  } catch (error) {
+    console.error('Error generating sitemap:', error);
+    res.status(500).send('Error generating sitemap');
   }
 });
 // ==========================================
