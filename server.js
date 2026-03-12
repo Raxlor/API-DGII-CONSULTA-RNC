@@ -6,19 +6,26 @@ const swaggerUi = require('swagger-ui-express');
 const rateLimit = require('express-rate-limit');
 const cors = require('cors');
 const swaggerDocument = require('./swagger.json');
-const app = express();
-const puerto = 3000;
 const { SitemapStream, streamToPromise } = require('sitemap');
 const { Readable } = require('stream');
+
+const app = express();
+const puerto = process.env.PORT || 3000;
+
+// ==========================================
+// CONFIGURACIÓN DE SEGURIDAD PROXY (CRÍTICO)
+// ==========================================
+// Esto soluciona el error ERR_ERL_UNEXPECTED_X_FORWARDED_FOR
+app.set('trust proxy', 1); 
+
 // ==========================================
 // CONFIGURACIÓN DE LA BASE DE DATOS
 // ==========================================
-
 const dbConfig = {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME // <-- Cambiado de 'name' a 'database'
+    database: process.env.DB_NAME
 };
 
 const pool = mysql.createPool({
@@ -28,48 +35,38 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-
 // ==========================================
-// MIDDLEWARES Y SEGURIDAD
+// MIDDLEWARES GENERALES
 // ==========================================
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+// CORS Global Inicial
 app.use(cors({
-    origin: '*', // En producción cambia '*' por el dominio de tu frontend
+    origin: '*', 
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-// Límite de 2,500 peticiones cada 5 minutos para proteger la infraestructura
+
+// Límite de peticiones para proteger la infraestructura de RAXLOR SYSTEMS
 const limitadorAPI = rateLimit({
     windowMs: 5 * 60 * 1000,
     max: 2500,
-    message: { error: 'Demasiadas peticiones desde esta IP. RAXLOR SYSTEMS protege la integridad del nodo.' }
+    message: { error: 'Demasiadas peticiones desde esta IP. RAXLOR SYSTEMS protege la integridad del nodo.' },
+    standardHeaders: true,
+    legacyHeaders: false,
 });
 
 app.use('/api/v1/', limitadorAPI);
 
-// Configuración de CORS dinámico para Dominican Technology
-const allowedOrigins = [process.env.ALLOWED_ORIGIN || 'http://localhost:3000'];
-
-const corsOptions = {
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Bloqueado por seguridad de Dominican Technology'));
-        }
-    },
-    credentials: true
-};
-
 // ==========================================
 // SISTEMA DE RASTREO (TRACKER)
 // ==========================================
-const registrarConsulta = async (rnc, tipo, ip) => {
+const registrarConsulta = async (tipo, ip) => {
     try {
+        // Ajustado para coincidir con el INSERT de 2 columnas que tienes
         await pool.query(
-            'INSERT INTO consultas_log (tipo_consulta, ip_cliente) VALUES ( ?, ?)',
+            'INSERT INTO consultas_log (tipo_consulta, ip_cliente) VALUES (?, ?)',
             [tipo, ip]
         );
     } catch (error) {
@@ -78,16 +75,14 @@ const registrarConsulta = async (rnc, tipo, ip) => {
 };
 
 // ==========================================
-// ESTADÍSTICAS REALES (SOCIAL PROOF)
+// RUTAS Y ENDPOINTS
 // ==========================================
-// Endpoint de estadísticas optimizado para baja latencia
 
-app.get('/api/stats', cors(corsOptions), async (req, res) => {
+// Estadísticas para Social Proof
+app.get('/api/stats', async (req, res) => {
     let conn;
     try {
-        conn = await pool.getConnection(); // Obtener conexión específica
-
-        // Ejecutamos ambas consultas en paralelo para ahorrar tiempo
+        conn = await pool.getConnection();
         const [queries, entities] = await Promise.all([
             conn.query('SELECT COUNT(*) as total FROM consultas_log'),
             conn.query('SELECT COUNT(*) as total FROM contribuyentes')
@@ -105,20 +100,11 @@ app.get('/api/stats', cors(corsOptions), async (req, res) => {
         console.error('Error en Stats:', error);
         res.status(500).json({ exito: false });
     } finally {
-        if (conn) conn.release(); // Liberar conexión inmediatamente
+        if (conn) conn.release();
     }
 });
 
-// ==========================================
-// DOCUMENTACIÓN SWAGGER (DISEÑO PREMIUM)
-// ==========================================info: {
-
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// ==========================================
-// RUTAS PRINCIPALES
-// ==========================================
-
+// Consulta Directa RNC
 app.get('/api/v1/rnc/:rnc', async (req, res) => {
     const { rnc } = req.params;
     const rncLimpio = rnc ? rnc.trim() : '';
@@ -129,7 +115,6 @@ app.get('/api/v1/rnc/:rnc', async (req, res) => {
         const [resultados] = await pool.query('SELECT * FROM contribuyentes WHERE rnc = ?', [rncLimpio]);
         if (resultados.length === 0) return res.status(404).json({ error: 'RNC no encontrado' });
 
-        // Solo registramos que hubo una consulta de tipo DIRECTO
         registrarConsulta('DIRECTO_RNC', req.ip).catch(e => console.error(e));
 
         res.json({ exito: true, data: resultados[0] });
@@ -138,15 +123,11 @@ app.get('/api/v1/rnc/:rnc', async (req, res) => {
     }
 });
 
-
+// Buscador por Nombre
 app.get('/api/v1/buscar', async (req, res) => {
     const busqueda = req.query.q ? req.query.q.trim() : '';
-
-    // Nueva validación de longitud mínima
     if (busqueda.length < 3) {
-        return res.status(400).json({
-            error: 'La búsqueda debe tener al menos 3 caracteres para garantizar precisión.'
-        });
+        return res.status(400).json({ error: 'La búsqueda requiere al menos 3 caracteres.' });
     }
 
     try {
@@ -155,98 +136,35 @@ app.get('/api/v1/buscar', async (req, res) => {
             [`%${busqueda}%`]
         );
 
-        // Registro asíncrono para no afectar la latencia
-        registrarConsulta(null, 'BUSQUEDA_NOMBRE', req.ip).catch(err =>
-            console.error("Error tracker:", err.message)
-        );
+        registrarConsulta('BUSQUEDA_NOMBRE', req.ip).catch(err => console.error("Error tracker:", err.message));
 
         res.json({ exito: true, total: resultados.length, data: resultados });
     } catch (error) {
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno' });
     }
 });
 
+// Swagger Docs
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get('/api/consultar', async (req, res) => {
-    const busqueda = req.query.q ? req.query.q.trim() : '';
-    if (busqueda.length < 3) return res.json([]);
-
-    try {
-        const [resultados] = await pool.query(
-            'SELECT rnc, razon_social, estado FROM contribuyentes WHERE rnc = ? OR razon_social LIKE ? LIMIT 50',
-            [busqueda, `%${busqueda}%`]
-        );
-
-        if (resultados.length > 0) {
-            // Solo registramos que se usó el buscador interno
-            registrarConsulta('INTERNA', req.ip).catch(e => console.error(e));
-        }
-
-        res.json(resultados);
-    } catch (error) {
-        res.status(500).json({ error: 'Error de base de datos.' });
-    }
-});
-
-
+// Sitemap
 app.get('/sitemap.xml', async (req, res) => {
-  try {
-
-    const links = [
-      {
-        url: '/',
-        changefreq: 'daily',
-        priority: 1.0,
-        lastmod: new Date().toISOString()
-      },
-      {
-        url: '/docs',
-        changefreq: 'weekly',
-        priority: 0.9,
-        lastmod: new Date().toISOString()
-      },
-      {
-        url: '/openapi.json',
-        changefreq: 'monthly',
-        priority: 0.7
-      },
-      {
-        url: '/api/v1/rnc/101003723',
-        changefreq: 'monthly',
-        priority: 0.6
-      },
-      {
-        url: '/api/v1/buscar?q=CERVECERIA',
-        changefreq: 'monthly',
-        priority: 0.6
-      }
-    ];
-
-    const stream = new SitemapStream({
-      hostname: 'https://api-dgii.dominicantechnology.com'
-    });
-
-    res.header('Content-Type', 'application/xml');
-
-    const xml = await streamToPromise(
-      Readable.from(links).pipe(stream)
-    );
-
-    res.send(xml.toString());
-
-  } catch (error) {
-    console.error('Error generating sitemap:', error);
-    res.status(500).send('Error generating sitemap');
-  }
+    try {
+        const stream = new SitemapStream({ hostname: 'https://api-dgii.dominicantechnology.com' });
+        const links = [
+            { url: '/', changefreq: 'daily', priority: 1.0 },
+            { url: '/docs', changefreq: 'weekly', priority: 0.9 }
+        ];
+        res.header('Content-Type', 'application/xml');
+        const xml = await streamToPromise(Readable.from(links).pipe(stream));
+        res.send(xml.toString());
+    } catch (error) {
+        res.status(500).send('Error sitemap');
+    }
 });
-// ==========================================
-// INICIO DEL SERVIDOR
-// ==========================================
+
 app.listen(puerto, () => {
-    console.log(`\n========================================`);
     console.log(`🚀 RAXLOR SYSTEMS - ENGINE READY`);
     console.log(`📡 Nodo: Dominican Technology`);
-    console.log(`========================================`);
     console.log(`📄 Docs : http://localhost:${puerto}/docs`);
-    console.log(`========================================\n`);
 });
