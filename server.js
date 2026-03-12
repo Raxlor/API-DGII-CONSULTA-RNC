@@ -35,6 +35,11 @@ const pool = mysql.createPool({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
+app.use(cors({
+    origin: '*', // En producción cambia '*' por el dominio de tu frontend
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 // Límite de 2,500 peticiones cada 5 minutos para proteger la infraestructura
 const limitadorAPI = rateLimit({
     windowMs: 5 * 60 * 1000,
