@@ -145,7 +145,16 @@ app.get('/api/v1/buscar', async (req, res) => {
 });
 
 // Swagger Docs
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    customSiteTitle: 'Documentacion API RNC Republica Dominicana',
+    customfavIcon: '/Logo.png',
+    customJs: '/swagger-custom.js'
+}));
+
+// Ruta SEO-friendly para documentacion
+app.get('/documentacion', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'documentacion.html'));
+});
 
 // Sitemap
 app.get('/sitemap.xml', async (req, res) => {
@@ -153,6 +162,7 @@ app.get('/sitemap.xml', async (req, res) => {
         const stream = new SitemapStream({ hostname: 'https://api-dgii.dominicantechnology.com' });
         const links = [
             { url: '/', changefreq: 'daily', priority: 1.0 },
+            { url: '/documentacion', changefreq: 'daily', priority: 0.95 },
             { url: '/docs', changefreq: 'weekly', priority: 0.9 }
         ];
         res.header('Content-Type', 'application/xml');
