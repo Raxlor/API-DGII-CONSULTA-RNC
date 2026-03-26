@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://api-dgii.dominicantechnology.com/sitemap.xml

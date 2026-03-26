@@ -4,12 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- SEO Básico -->
-    <title>API RNC República Dominicana | Consulta RNC y Cédula Gratis</title>
+    <title>API RNC Republica Dominicana | Consulta RNC y Cedula DGII Gratis</title>
 
     <meta name="description"
-        content="API gratuita para consultar RNC y cédula de contribuyentes en República Dominicana. 2500 peticiones cada 5 minutos. Sin registro requerido.">
+        content="Consulta RNC y cedula en Republica Dominicana con API gratis y rapida. Integra endpoints DGII para buscar contribuyentes por RNC o razon social, sin registro.">
 
     <meta name="keywords" content="
         api rnc republica dominicana,
@@ -23,25 +24,81 @@
         ">
 
     <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1">
+    <meta name="language" content="es-DO">
 
-    <meta name="author" content="Dominican Technology ">
+    <meta name="author" content="RAXLOR SYSTEMS">
+    <link rel="canonical" href="https://api-dgii.dominicantechnology.com/">
+    <link rel="alternate" hreflang="es-DO" href="https://api-dgii.dominicantechnology.com/">
+    <link rel="alternate" hreflang="es" href="https://api-dgii.dominicantechnology.com/">
+    <link rel="alternate" hreflang="x-default" href="https://api-dgii.dominicantechnology.com/">
 
     <!-- Open Graph (para redes sociales) -->
-    <meta property="og:title" content="API RNC República Dominicana - Consulta Gratis">
+    <meta property="og:title" content="API RNC Republica Dominicana - Consulta Gratis">
     <meta property="og:description"
-        content="API gratuita para consultar RNC y cédula en República Dominicana. Sin registro. 2500 requests cada 5 minutos.">
+        content="API gratuita para consultar RNC y cedula en Republica Dominicana. Sin registro. 2500 requests cada 5 minutos.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://api-dgii.dominicantechnology.com/">
+    <meta property="og:site_name" content="API RNC RD">
+    <meta property="og:locale" content="es_DO">
+    <meta property="og:image" content="https://api-dgii.dominicantechnology.com/og-image.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="API RNC República Dominicana">
-    <meta name="twitter:description" content="Consulta RNC y cédula con una API gratuita para desarrolladores.">
-    <meta property="og:title" content="API RNC Dominicana - dominican Technology">
-    <meta property="og:description" content="Integración directa con la base de datos de la DGII para desarrolladores.">
-    <meta property="og:image" content="https://api-dgii.dominicantechnology.com/og-image.png">
+    <meta name="twitter:title" content="API RNC Republica Dominicana">
+    <meta name="twitter:description" content="Consulta RNC y cedula con una API gratuita para desarrolladores.">
+    <meta name="twitter:image" content="https://api-dgii.dominicantechnology.com/og-image.png">
 
     <link rel="icon" type="image/png" href="/Logo.png">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "Organization",
+                    "name": "RAXLOR SYSTEMS",
+                    "url": "https://api-dgii.dominicantechnology.com/",
+                    "logo": "https://api-dgii.dominicantechnology.com/Logo.png",
+                    "sameAs": [
+                        "https://github.com/Raxlor"
+                    ]
+                },
+                {
+                    "@type": "WebSite",
+                    "name": "API RNC Republica Dominicana",
+                    "url": "https://api-dgii.dominicantechnology.com/",
+                    "inLanguage": "es-DO",
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target": "https://api-dgii.dominicantechnology.com/api/v1/buscar?q={search_term_string}",
+                        "query-input": "required name=search_term_string"
+                    }
+                },
+                {
+                    "@type": "FAQPage",
+                    "mainEntity": [
+                        {
+                            "@type": "Question",
+                            "name": "Como consultar un RNC en Republica Dominicana?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Puedes consultar un RNC usando el endpoint /api/v1/rnc/{rnc} con el numero sin guiones."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "La API de consulta RNC es gratis?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Si. La API ofrece acceso gratuito con limite de 2500 solicitudes cada 5 minutos por IP."
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -140,7 +197,7 @@
                     Technology</span>
             </div>
             <div class="flex items-center gap-4">
-                <a href="/docs"
+                <a href="/documentacion"
                     class="hidden md:block text-xs font-bold text-slate-500 hover:text-brand-blue transition texto-mayuscula">Documentación</a>
                 <span
                     class="bg-green-100 text-green-700 text-[10px] px-3 py-1 rounded-full font-black texto-mayuscula shadow-sm">API
@@ -163,6 +220,7 @@
             <div class="bg-white p-2 rounded-3xl shadow-2xl shadow-blue-200/40 border border-slate-200 mb-8">
                 <form id="formularioBusqueda" class="flex flex-col md:flex-row w-full gap-2">
                     <input type="text" id="inputBusqueda" autocomplete="off" placeholder="Escribe un nombre o RNC..."
+                        aria-label="Buscar por RNC, cedula o razon social"
                         class="flex-grow px-6 py-5 rounded-2xl text-xl focus:outline-none bg-transparent font-medium">
                     <button type="submit"
                         class="bg-brand-blue hover:bg-blue-700 text-white px-10 py-5 rounded-2xl font-black transition-all texto-mayuscula shadow-lg shadow-blue-600/20 active:scale-95">
@@ -201,7 +259,7 @@
                 <div class="flex gap-3">
                     <a href="https://github.com/Raxlor" target="_blank"
                         class="bg-slate-800 text-white px-5 py-4 rounded-xl font-bold text-xs hover:bg-slate-700 transition-all flex items-center gap-2 uppercase tracking-wider">GitHub</a>
-                    <a href="/docs"
+                    <a href="/documentacion"
                         class="bg-white text-brand-dark px-6 py-4 rounded-xl font-black texto-mayuscula text-xs hover:bg-brand-blue hover:text-white transition-all shadow-lg">Documentación</a>
                 </div>
             </div>
@@ -300,6 +358,26 @@
                 </div>
             </div>
         </section>
+
+        <section class="w-full max-w-4xl mx-auto mb-16 px-4 reveal">
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+                <h2 class="text-2xl font-black text-brand-dark tracking-tight mb-4">Preguntas frecuentes sobre la API RNC</h2>
+                <div class="space-y-4 text-slate-600 text-sm leading-relaxed">
+                    <div>
+                        <h3 class="font-bold text-brand-dark mb-1">Como consultar RNC y cedula por API en Republica Dominicana?</h3>
+                        <p>Usa el endpoint <strong>/api/v1/rnc/{rnc}</strong> para consultas directas y <strong>/api/v1/buscar?q=texto</strong> para coincidencias por razon social.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-brand-dark mb-1">Necesito registro para usar la API DGII?</h3>
+                        <p>No. Puedes integrar la API sin crear cuenta, respetando el limite de uso para mantener estabilidad del servicio.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-brand-dark mb-1">Donde veo la documentacion completa?</h3>
+                        <p>Encuentra la guia en <a href="/documentacion" class="text-brand-blue font-bold hover:underline">/documentacion</a> y el modo interactivo en <a href="/docs" class="text-brand-blue font-bold hover:underline">/docs</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer class="bg-brand-dark text-white py-12 px-6">
@@ -315,7 +393,7 @@
                 <div class="flex gap-4 justify-center md:justify-end items-center mb-4">
                     <a href="https://github.com/Raxlor" target="_blank"
                         class="text-slate-400 hover:text-white transition text-xs font-bold uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md">GitHub</a>
-                    <a href="/docs"
+                    <a href="/documentacion"
                         class="text-slate-400 hover:text-white transition text-xs font-bold uppercase tracking-widest border border-slate-800 px-3 py-1 rounded-md">Docs</a>
                 </div>
                 <p class="text-[11px] font-bold texto-mayuscula text-slate-500 tracking-tighter">© 2026 Dominican
@@ -416,12 +494,19 @@
             mensaje.innerHTML = "SINCRONIZANDO CON NODO DGII...";
             divTabla.classList.add('hidden');
             try {
-                const res = await fetch(`/api/consultar?q=${encodeURIComponent(q)}`);
+                const res = await fetch(`/api/v1/buscar?q=${encodeURIComponent(q)}`);
                 const data = await res.json();
-                if (data.length === 0) { mensaje.innerHTML = "SIN COINCIDENCIAS."; return; }
-                mensaje.innerHTML = `${data.length} REGISTROS LOCALIZADOS`;
+                if (!res.ok || !data.exito) {
+                    mensaje.innerHTML = (data && data.error) ? data.error.toUpperCase() : "ERROR EN LA CONEXIÓN.";
+                    return;
+                }
+
+                const resultados = Array.isArray(data.data) ? data.data : [];
+                if (resultados.length === 0) { mensaje.innerHTML = "SIN COINCIDENCIAS."; return; }
+
+                mensaje.innerHTML = `${resultados.length} REGISTROS LOCALIZADOS`;
                 divTabla.classList.remove('hidden');
-                cuerpoTabla.innerHTML = data.map(item => `
+                cuerpoTabla.innerHTML = resultados.map(item => `
                     <tr class="hover:bg-slate-50 transition cursor-pointer group" onclick="navigator.clipboard.writeText('${item.rnc}')">
                         <td class="px-8 py-6">
                             <div class="flex flex-col">
