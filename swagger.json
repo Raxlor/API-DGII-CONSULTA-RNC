@@ -3,7 +3,8 @@
     "info": {
         "title": "Consulta RNC - API Gratuita",
         "version": "1.2.5",
-"description": "###  Herramienta de consulta de contribuyentes\n\nEste es un proyecto sencillo diseñado para facilitar el acceso a la información pública de contribuyentes en la República Dominicana.\n\n* **Desarrollado por:** RAXLOR SYSTEMS\n* **Límite de cortesía:** 2,500 peticiones cada 5 minutos\n* **Privacidad:** No guardamos registros de las consultas realizadas.",        "contact": {
+        "description": "###  Herramienta de consulta de contribuyentes\n\nEste es un proyecto sencillo diseñado para facilitar el acceso a la información pública de contribuyentes en la República Dominicana.\n\n* **Desarrollado por:** RAXLOR SYSTEMS\n* **Límite de cortesía:** 2,500 peticiones cada 5 minutos\n* **Privacidad:** No guardamos registros de las consultas realizadas.",
+        "contact": {
             "name": "RAXLOR SYSTEMS",
             "url": "https://github.com/Raxlor"
         }
@@ -70,6 +71,53 @@
                         "in": "query",
                         "required": true,
                         "description": "Término de búsqueda (mínimo 3 caracteres)",
+                        "schema": {
+                            "type": "string",
+                            "example": "CERVECERIA NACIONAL"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Resultados de la búsqueda",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "exito": {
+                                            "type": "boolean"
+                                        },
+                                        "total": {
+                                            "type": "integer"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Contribuyente"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/buscardgi": {
+            "get": {
+                "tags": [
+                    "Consultas"
+                ],
+                "summary": "Búsqueda por razón social en la base de datos de la DGII",
+                "description": "Búsqueda de coincidencias basadas en el nombre comercial o razón social en la base de datos de la DGII.",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "required": true,
+                        "description": "Término de búsqueda (mínimo 4 caracteres)",
                         "schema": {
                             "type": "string",
                             "example": "CERVECERIA NACIONAL"
