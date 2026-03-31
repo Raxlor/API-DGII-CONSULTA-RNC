@@ -42,7 +42,7 @@
     <meta property="og:site_name" content="API RNC RD">
     <meta property="og:locale" content="es_DO">
     <meta property="og:image" content="https://api-dgii.dominicantechnology.com/og-image.png">
-
+    <meta name="theme-color" content="#2563eb">
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="API RNC Republica Dominicana">
@@ -210,6 +210,7 @@
 
         <div class="w-full max-w-4xl text-center">
             <h1 class="text-4xl md:text-6xl font-black text-brand-dark mb-4 tracking-tight">
+                <span class="sr-only">API RNC República Dominicana – Consulta RNC y Cédula DGII en tiempo real</span>
                 Busca cualquier <span class="text-brand-blue">RNC</span> al instante.
             </h1>
             <p class="text-slate-500 text-lg md:text-xl mb-10 max-w-2xl mx-auto font-medium leading-relaxed">
@@ -358,7 +359,57 @@
                 </div>
             </div>
         </section>
+        <section class="max-w-4xl mx-auto px-6 mb-16">
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
 
+                <h2 class="text-2xl font-black text-brand-dark mb-4">
+                    API DGII República Dominicana: Consulta RNC y Cédula en tiempo real
+                </h2>
+
+                <p class="text-sm text-slate-600 leading-relaxed mb-4">
+                    Esta API permite consultar RNC y cédulas en la República Dominicana utilizando datos públicos de la
+                    DGII.
+                    Está diseñada para desarrolladores, sistemas SaaS, fintechs y plataformas contables que necesitan
+                    validar
+                    contribuyentes en tiempo real sin procesos manuales.
+                </p>
+
+                <h3 class="font-bold text-brand-dark mt-6 mb-2">¿Qué es un RNC en República Dominicana?</h3>
+                <p class="text-sm text-slate-600 mb-4">
+                    El Registro Nacional de Contribuyentes (RNC) es el identificador fiscal utilizado por la DGII para
+                    registrar
+                    empresas y personas físicas con actividad económica. Este identificador es obligatorio para
+                    facturación,
+                    impuestos y validaciones comerciales.
+                </p>
+
+                <h3 class="font-bold text-brand-dark mt-6 mb-2">Cómo consultar un RNC usando una API</h3>
+                <p class="text-sm text-slate-600 mb-4">
+                    Puedes consultar un RNC directamente mediante solicitudes HTTP utilizando endpoints como
+                    <strong>/api/v1/rnc/{rnc}</strong> o realizar búsquedas por nombre con
+                    <strong>/api/v1/buscar?q=texto</strong>. Esto permite integrar validaciones automáticas en sistemas
+                    ERP,
+                    CRM o plataformas de facturación electrónica.
+                </p>
+
+                <h3 class="font-bold text-brand-dark mt-6 mb-2">Casos de uso de la API DGII</h3>
+                <ul class="text-sm text-slate-600 list-disc pl-5 space-y-1">
+                    <li>Validación automática de clientes en sistemas SaaS</li>
+                    <li>Integración en plataformas de facturación electrónica</li>
+                    <li>Verificación de proveedores y empresas</li>
+                    <li>Automatización de procesos contables</li>
+                </ul>
+
+                <h3 class="font-bold text-brand-dark mt-6 mb-2">Ventajas de usar esta API</h3>
+                <ul class="text-sm text-slate-600 list-disc pl-5 space-y-1">
+                    <li>Consulta RNC en tiempo real</li>
+                    <li>Sin necesidad de registro</li>
+                    <li>Alta velocidad y baja latencia</li>
+                    <li>Optimizada para grandes volúmenes de datos</li>
+                </ul>
+
+            </div>
+        </section>
         <section class="w-full max-w-4xl mx-auto mb-16 px-4 reveal">
             <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
                 <h2 class="text-2xl font-black text-brand-dark tracking-tight mb-4">Preguntas frecuentes sobre la API
@@ -368,7 +419,8 @@
                         <h3 class="font-bold text-brand-dark mb-1">Como consultar RNC y cedula por API en Republica
                             Dominicana?</h3>
                         <p>Usa el endpoint <strong>/api/v1/rnc/{rnc}</strong> para consultas directas y
-                            <strong>/api/v1/buscar?q=texto</strong> para coincidencias por razon social.</p>
+                            <strong>/api/v1/buscar?q=texto</strong> para coincidencias por razon social.
+                        </p>
                     </div>
                     <div>
                         <h3 class="font-bold text-brand-dark mb-1">Necesito registro para usar la API DGII?</h3>
