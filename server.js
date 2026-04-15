@@ -125,7 +125,7 @@ const extraerTbRowComoJson = (html = '') => {
             });
         }
     }
-   
+
     return filas;
 };
 
@@ -184,11 +184,11 @@ app.get('/api/v1/buscar', async (req, res) => {
     if (busqueda.length < 3) {
         return res.status(400).json({ error: 'La búsqueda requiere al menos 3 caracteres.' });
     }
-
+    const busquedaLimpia = busqueda.replace(/[-.]/g, '');
     try {
         const [resultados] = await pool.query(
-            'SELECT rnc, razon_social, actividad_economica, estado FROM contribuyentes WHERE razon_social LIKE ? LIMIT 50',
-            [`%${busqueda}%`]
+            'SELECT rnc, razon_social, actividad_economica, estado FROM contribuyentes WHERE rnc = ? OR razon_social LIKE ? LIMIT 50',
+            [busquedaLimpia, `%${busqueda}%`]
         );
 
         registrarConsulta('BUSQUEDA_NOMBRE', req.ip, busqueda).catch(err => console.error("Error tracker:", err.message));
