@@ -64,12 +64,11 @@ app.use('/api/v1/', limitadorAPI);
 // ==========================================
 // SISTEMA DE RASTREO (TRACKER)
 // ==========================================
-const registrarConsulta = async (tipo, ip) => {
+const registrarConsulta = async (tipo, ip, query = null) => {
     try {
-        // Ajustado para coincidir con el INSERT de 2 columnas que tienes
         await pool.query(
-            'INSERT INTO consultas_log (tipo_consulta, ip_cliente) VALUES (?, ?)',
-            [tipo, ip]
+            'INSERT INTO consultas_log (tipo_consulta, ip_cliente, query) VALUES (?, ?, ?)',
+            [tipo, ip, query]
         );
     } catch (error) {
         console.error('❌ Error en el rastreador:', error.sqlMessage || error.message);
@@ -171,7 +170,7 @@ app.get('/api/v1/rnc/:rnc', async (req, res) => {
         const [resultados] = await pool.query('SELECT * FROM contribuyentes WHERE rnc = ?', [rncLimpio]);
         if (resultados.length === 0) return res.status(404).json({ error: 'RNC no encontrado' });
 
-        registrarConsulta('DIRECTO_RNC', req.ip).catch(e => console.error(e));
+        registrarConsulta('DIRECTO_RNC', req.ip, rncLimpio).catch(e => console.error(e));
 
         res.json({ exito: true, fuente: "Interna", data: resultados[0] });
     } catch (error) {
@@ -192,7 +191,7 @@ app.get('/api/v1/buscar', async (req, res) => {
             [`%${busqueda}%`]
         );
 
-        registrarConsulta('BUSQUEDA_NOMBRE', req.ip).catch(err => console.error("Error tracker:", err.message));
+        registrarConsulta('BUSQUEDA_NOMBRE', req.ip, busqueda).catch(err => console.error("Error tracker:", err.message));
 
         res.json({ exito: true, fuente: "Interna", total: resultados.length, data: resultados });
     } catch (error) {
@@ -250,7 +249,7 @@ app.get('/api/v1/buscardgi/', async (req, res) => {
         });
 
         const respuestaRaw = await postRes.text();
-        registrarConsulta('BUSQUEDA_DGII', req.ip).catch(err => console.error('Error tracker:', err.message));
+
 
         if (!postRes.ok) {
             return res.status(502).json({
@@ -261,6 +260,7 @@ app.get('/api/v1/buscardgi/', async (req, res) => {
         }
 
         const resultados = extraerTbRowComoJson(respuestaRaw);
+        registrarConsulta('BUSQUEDA_DGII', req.ip, busqueda).catch(err => console.error('Error tracker:', err.message));
 
         return res.json({
             exito: true,
